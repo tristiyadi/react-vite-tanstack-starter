@@ -1,41 +1,19 @@
-import { type FC } from 'react';
-import { Link } from "react-router";
+import type { FC } from "react";
+import { ThemeProvider } from "@/components/ThemeProvider";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
-import AppRoutes from './routes';
+import AppRoutes from "./routes";
 
-const App: FC = () => {
-
-  return (
-    <div>
-      <nav className="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
-        <div className="container">
-          <Link to="/" className="navbar-brand">HOME</Link>
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <a href="https://trimogo.com" target="_blank" className="nav-link active" aria-current="page">TRIMOGO.COM</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
-      <div className="container mt-5">
-        <AppRoutes />
-      </div>
-    </div>
-  )
-}
+const App: FC = () => (
+	<ThemeProvider defaultTheme="light" storageKey="app-ui-theme">
+		<TooltipProvider>
+			<Toaster />
+			<Sonner />
+			<AppRoutes />
+		</TooltipProvider>
+	</ThemeProvider>
+);
 
 export default App;

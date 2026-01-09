@@ -1,134 +1,165 @@
+import { type FC, type FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router";
 
-import { type FC, useState, useEffect, type FormEvent } from "react";
-import { useNavigate, useParams, Link } from 'react-router';
-
-import SidebarMenu from '../../../components/SidebarMenu';
+import SidebarMenu from "../../../components/SidebarMenu";
 //import custom hook useUserByById & useUserUpdate
-import { useUserById, useUserUpdate } from '../../../hooks/user/useUser';
+import { useUserById, useUserUpdate } from "../../../hooks/user/useUser";
 
 //interface for validation errors
 interface ValidationErrors {
-    [key: string]: string[];
+	[key: string]: string[];
 }
 
 const UserEdit: FC = () => {
+	const navigate = useNavigate();
+	const { id } = useParams();
 
-    const navigate = useNavigate();
-    const { id } = useParams();
+	//define state user
+	const [name, setName] = useState<string>("");
+	const [email, setEmail] = useState<string>("");
+	const [password, setPassword] = useState<string>("");
 
-    //define state user
-    const [name, setName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [password, setPassword] = useState<string>('');
+	//define state errors
+	const [errors, setErrors] = useState<ValidationErrors>({});
 
-    //define state errors
-    const [errors, setErrors] = useState<ValidationErrors>({});
+	// inisialisasi useUSerById
+	const { data: user } = useUserById(Number(id));
 
-    // inisialisasi useUSerById
-    const { data: user } = useUserById(Number(id));
+	//set data user to state
+	useEffect(() => {
+		if (user) {
+			setName(user.name);
+			setEmail(user.email);
+		}
+	}, [user]);
 
-    //set data user to state
-    useEffect(() => {
+	// Inisialisasi useUserUpdate
+	const { mutate, isPending } = useUserUpdate();
 
-        if (user) {
-            setName(user.name);
-            setEmail(user.email);
-        }
-    }, [user]);
+	// Handle submit form
+	const updateUser = async (e: FormEvent) => {
+		e.preventDefault();
 
-    // Inisialisasi useUserUpdate
-    const { mutate, isPending } = useUserUpdate();
+		// Call the user update mutation
+		mutate(
+			{
+				id: Number(id),
+				data: {
+					name,
+					email,
+					password,
+				},
+			},
+			{
+				onSuccess: () => {
+					// Redirect to users index
+					navigate("/admin/users");
+				},
+				onError: (error: any) => {
+					const response = error.response?.data;
+					const status = error.response?.status;
 
-    // Handle submit form
-    const updateUser = async (e: FormEvent) => {
-        e.preventDefault();
+					// reset error
+					setErrors({});
 
-        // Call the user update mutation
-        mutate({
-            id: Number(id),
-            data: {
-                name,
-                email,
-                password
-            }
-        }, {
-            onSuccess: () => {
+					// VALIDATION ERROR (422)
+					if (status === 422 && response?.data) {
+						setErrors(response.data);
+						return;
+					}
 
-                // Redirect to users index
-                navigate('/admin/users');
+					// EMAIL DUPLICATE (409)
+					if (status === 409) {
+						setErrors({
+							email: [response.message],
+						});
+						return;
+					}
+				},
+			},
+		);
+	};
 
-            },
-            onError: (error: any) => {
-                const response = error.response?.data;
-                const status = error.response?.status;
+	return (
+		<div className="container mt-5 mb-5">
+			<div className="row">
+				<div className="col-md-3">
+					<SidebarMenu />
+				</div>
+				<div className="col-md-9">
+					<div className="card border-0 rounded-4 shadow-sm">
+						<div className="card-header">EDIT USER</div>
+						<div className="card-body">
+							<form onSubmit={updateUser}>
+								<div className="form-group mb-3">
+									<label className="mb-1 fw-bold">Full Name</label>
+									<input
+										type="text"
+										value={name}
+										onChange={(e) => setName(e.target.value)}
+										className="form-control"
+										placeholder="Full Name"
+									/>
+									{errors.name && (
+										<div className="alert alert-danger mt-2 rounded-4">
+											{errors.namme[0]}
+										</div>
+									)}
+								</div>
 
-                // reset error
-                setErrors({});
+								<div className="form-group mb-3">
+									<label className="mb-1 fw-bold">Email address</label>
+									<input
+										type="email"
+										value={email}
+										onChange={(e) => setEmail(e.target.value)}
+										className="form-control"
+										placeholder="Email Address"
+									/>
+									{errors.email && (
+										<div className="alert alert-danger mt-2 rounded-4">
+											{errors.email[0]}
+										</div>
+									)}
+								</div>
 
-                // VALIDATION ERROR (422)
-                if (status === 422 && response?.data) {
-                    setErrors(response.data);
-                    return;
-                }
+								<div className="form-group mb-3">
+									<label className="mb-1 fw-bold">Password</label>
+									<input
+										type="password"
+										value={password}
+										onChange={(e) => setPassword(e.target.value)}
+										className="form-control"
+										placeholder="Password"
+									/>
+									{errors.password && (
+										<div className="alert alert-danger mt-2 rounded-4">
+											{errors.password[0]}
+										</div>
+									)}
+								</div>
 
-                // EMAIL DUPLICATE (409)
-                if (status === 409) {
-                    setErrors({
-                        email: [response.message],
-                    });
-                    return;
-                }
-            }
-        })
-    }
+								<button
+									type="submit"
+									className="btn btn-md btn-primary rounded-4 shadow-sm border-0"
+									disabled={isPending}
+								>
+									{isPending ? "Updating..." : "Update"}
+								</button>
 
-    return (
-        <div className="container mt-5 mb-5">
-            <div className="row">
-                <div className="col-md-3">
-                    <SidebarMenu />
-                </div>
-                <div className="col-md-9">
-                    <div className="card border-0 rounded-4 shadow-sm">
-                        <div className="card-header">
-                            EDIT USER
-                        </div>
-                        <div className="card-body">
-                            <form onSubmit={updateUser}>
+								<Link
+									to="/admin/users"
+									className="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2"
+								>
+									Cancel
+								</Link>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+};
 
-                                <div className="form-group mb-3">
-                                    <label className="mb-1 fw-bold">Full Name</label>
-                                    <input type="text" value={name} onChange={(e) => setName(e.target.value)} className="form-control" placeholder="Full Name" />
-                                    {errors.name && <div className="alert alert-danger mt-2 rounded-4">{errors.namme[0]}</div>}
-                                </div>
-
-                                <div className="form-group mb-3">
-                                    <label className="mb-1 fw-bold">Email address</label>
-                                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="form-control"
-                                        placeholder="Email Address" />
-                                    {errors.email && <div className="alert alert-danger mt-2 rounded-4">{errors.email[0]}</div>}
-                                </div>
-
-                                <div className="form-group mb-3">
-                                    <label className="mb-1 fw-bold">Password</label>
-                                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="form-control"
-                                        placeholder="Password" />
-                                    {errors.password && <div className="alert alert-danger mt-2 rounded-4">{errors.password[0]}</div>}
-                                </div>
-
-                                <button type="submit" className="btn btn-md btn-primary rounded-4 shadow-sm border-0" disabled={isPending}>
-                                    {isPending ? 'Updating...' : 'Update'}
-                                </button>
-
-                                <Link to="/admin/users" className="btn btn-md btn-secondary rounded-4 shadow-sm border-0 ms-2">Cancel</Link>
-
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div >
-    )
-}
-
-export default UserEdit
+export default UserEdit;
