@@ -29,15 +29,14 @@ import { useLogout } from "@/hooks/auth/useAuth";
 const AdminLayout = () => {
 	const auth = useContext(AuthContext);
 	const logout = useLogout();
+	const [sidebarOpen, setSidebarOpen] = useState(true);
+	const location = useLocation();
 
 	const isAuthenticated = auth?.isAuthenticated ?? false;
 
 	if (!isAuthenticated) {
 		return <Navigate to="/login" replace />;
 	}
-
-	const [sidebarOpen, setSidebarOpen] = useState(true);
-	const location = useLocation();
 
 	const navItems = [
 		{ icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
@@ -46,8 +45,7 @@ const AdminLayout = () => {
 		{ icon: Settings, label: "Settings", path: "/admin/settings" },
 	];
 
-	const isActive = (path: string) =>
-		location.pathname === path || location.pathname.startsWith(path + "/");
+	const isActive = (path: string) => location.pathname === path;
 
 	return (
 		<div className="min-h-screen flex bg-background">
@@ -89,6 +87,7 @@ const AdminLayout = () => {
 				</nav>
 				<div className="p-3 border-t border-border">
 					<button
+						type="button"
 						onClick={logout}
 						className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
 					>

@@ -16,7 +16,13 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"nursery": "warn"
+			"nursery": {
+				"noUnresolvedImports": "off",
+				"useExplicitType": "off",
+				"useQwikValidLexicalScope": "off",
+				"useSortedClasses": "off",
+				"noTernary": "off"
+			}
 		}
 	},
 	"javascript": {

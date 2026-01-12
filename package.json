@@ -88,11 +88,5 @@
     "src/**/*.{js,ts,jsx,tsx}": [
       "biome check --write --no-errors-on-unmatched"
     ]
-  },
-  "husky": {
-    "skipCI": true,
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }

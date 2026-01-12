@@ -5,18 +5,29 @@ export interface User {
 	id: number;
 	name: string;
 	email: string;
+	role: string;
+	password: string;
+	password_confirmation?: string;
 }
-interface UserRequest {
+export interface UserRequest {
 	name: string;
 	email: string;
-	password?: string;
+	password: string;
+	role: string;
+	password_confirmation?: string;
 }
 
 // GET all users
-export const useUsers = () =>
+export const useUsers = (search = "", page = 1) =>
 	useQuery<User[]>({
-		queryKey: ["users"],
-		queryFn: () => Api.get("/api/users").then((res) => res.data.data),
+		queryKey: ["users", search, page],
+		queryFn: async () =>
+			Api.get("/api/users", {
+				params: {
+					search,
+					page,
+				},
+			}).then((res) => res.data.data),
 	});
 
 // GET user by ID
