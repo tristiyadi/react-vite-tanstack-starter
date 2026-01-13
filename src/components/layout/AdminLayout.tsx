@@ -7,6 +7,7 @@ import {
 	Menu,
 	Search,
 	Settings,
+	ShieldCheck,
 	Users,
 	X,
 } from "lucide-react";
@@ -24,11 +25,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { AuthContext } from "@/context/AuthContext";
-import { useLogout } from "@/hooks/auth/useAuth";
+import { useAuthUser, useLogout } from "@/hooks/auth/useAuth";
 
 const AdminLayout = () => {
 	const auth = useContext(AuthContext);
+	const user = useAuthUser();
 	const logout = useLogout();
+
+	const userInitial = user?.name
+		? user.name
+				.split(" ")
+				.map((n) => n[0])
+				.join("")
+				.toUpperCase()
+				.slice(0, 2)
+		: "??";
 	const [sidebarOpen, setSidebarOpen] = useState(true);
 	const location = useLocation();
 
@@ -41,6 +52,7 @@ const AdminLayout = () => {
 	const navItems = [
 		{ icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
 		{ icon: Users, label: "Users", path: "/admin/users" },
+		{ icon: ShieldCheck, label: "Roles", path: "/admin/roles" },
 		{ icon: FileText, label: "Posts", path: "/admin/posts" },
 		{ icon: Settings, label: "Settings", path: "/admin/settings" },
 	];
@@ -120,10 +132,10 @@ const AdminLayout = () => {
 								<Button variant="ghost" className="flex items-center gap-2">
 									<Avatar className="h-8 w-8">
 										<AvatarFallback className="bg-primary text-primary-foreground">
-											JD
+											{userInitial}
 										</AvatarFallback>
 									</Avatar>
-									<span className="font-medium">John Doe</span>
+									<span className="font-medium">{user?.name || "User"}</span>
 									<ChevronDown className="h-4 w-4" />
 								</Button>
 							</DropdownMenuTrigger>

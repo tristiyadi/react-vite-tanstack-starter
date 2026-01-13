@@ -9,7 +9,9 @@ import Api from "../../services/api";
 interface RegisterRequest {
 	name: string;
 	email: string;
+	username?: string;
 	password: string;
+	password_confirmation: string;
 }
 interface LoginRequest {
 	email: string;
@@ -17,9 +19,12 @@ interface LoginRequest {
 }
 interface User {
 	id: number;
+	uid: string;
 	name: string;
 	username: string;
 	email: string;
+	role_id: number;
+	status: string;
 }
 
 export const useRegister = () =>
@@ -45,10 +50,8 @@ export const useAuthUser = (): User | null => {
 
 export const useLogout = (): (() => void) => {
 	// Ambil setIsAuthenticated dari context
-	const authContext = useContext(AuthContext);
-
-	// Gunakan null assertion karena kita yakin AuthContext akan selalu tersedia
-	const { setIsAuthenticated } = authContext!;
+	const authContext: any = useContext(AuthContext);
+	const { setIsAuthenticated } = authContext;
 
 	// Inisialisasi navigate
 	const navigate = useNavigate();

@@ -22,6 +22,7 @@ const Register = () => {
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
+		username: "",
 		password: "",
 		confirmPassword: "",
 		terms: false,
@@ -33,11 +34,11 @@ const Register = () => {
 
 		if (formData.password !== formData.confirmPassword) {
 			setErrors({
-				confirmPassword: ["Passwords do not match"],
+				password_confirmation: ["Passwords Confirmation do not match"],
 			});
 			toast({
 				title: "Error",
-				description: "Passwords do not match",
+				description: "Passwords Confirmation do not match",
 				variant: "destructive",
 			});
 			return;
@@ -60,7 +61,9 @@ const Register = () => {
 			{
 				name: formData.name,
 				email: formData.email,
+				username: formData.username || undefined,
 				password: formData.password,
+				password_confirmation: formData.confirmPassword,
 			},
 			{
 				onSuccess: () => {
@@ -85,7 +88,7 @@ const Register = () => {
 					}
 
 					// EMAIL DUPLICATE (409)
-					if (status === 409) {
+					if (status === 409 && response?.message) {
 						setErrors({
 							email: [response.message],
 						});
@@ -191,6 +194,28 @@ const Register = () => {
 									</div>
 									{errors.name && (
 										<div className="text-sm text-red-500">{errors.name[0]}</div>
+									)}
+								</div>
+
+								<div className="space-y-2">
+									<Label htmlFor="username">Username (Optional)</Label>
+									<div className="relative">
+										<User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+										<Input
+											id="username"
+											type="text"
+											placeholder="johndoe"
+											className="pl-10"
+											value={formData.username}
+											onChange={(e) =>
+												setFormData({ ...formData, username: e.target.value })
+											}
+										/>
+									</div>
+									{errors.username && (
+										<div className="text-sm text-red-500">
+											{errors.username[0]}
+										</div>
 									)}
 								</div>
 
@@ -310,7 +335,13 @@ const Register = () => {
 								<Button type="submit" className="w-full" disabled={isLoading}>
 									{isLoading ? (
 										<span className="flex items-center gap-2">
-											<svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+											<svg
+												className="animate-spin h-4 w-4"
+												viewBox="0 0 24 24"
+												role="img"
+												aria-label="Loading"
+											>
+												<title>Loading</title>
 												<circle
 													className="opacity-25"
 													cx="12"

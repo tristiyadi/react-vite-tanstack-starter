@@ -6,7 +6,8 @@ import AdminLayout from "@/components/layout/AdminLayout.tsx";
 import { AuthContext } from "../context/AuthContext";
 // Admin Pages
 import Dashboard from "../views/admin/dashboard/index.tsx";
-import UsersIndex from "../views/admin/users/index.tsx";
+import RolesIndex from "../views/admin/user-management/roles/index.tsx";
+import UsersIndex from "../views/admin/user-management/users/index.tsx";
 // Public Pages
 import Login from "../views/auth/login.tsx";
 import Register from "../views/auth/register.tsx";
@@ -54,6 +55,7 @@ export default function AppRoutes() {
 				{ index: true, element: <Navigate to="dashboard" replace /> },
 				{ path: "dashboard", element: <Dashboard /> },
 				{ path: "users", element: <UsersIndex /> },
+				{ path: "roles", element: <RolesIndex /> },
 			],
 		},
 		{

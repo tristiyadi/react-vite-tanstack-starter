@@ -3,18 +3,24 @@ import Api from "../../services/api";
 
 export interface User {
 	id: number;
+	uid: string;
 	name: string;
 	email: string;
-	role: string;
-	password: string;
-	password_confirmation?: string;
+	username?: string;
+	role_id: number;
+	status: string;
+	created_at?: string;
+	updated_at?: string;
 }
+
 export interface UserRequest {
 	name: string;
 	email: string;
-	password: string;
-	role: string;
+	password?: string;
 	password_confirmation?: string;
+	username?: string;
+	role_id: number;
+	status: string;
 }
 
 // GET all users
@@ -30,12 +36,12 @@ export const useUsers = (search = "", page = 1) =>
 			}).then((res) => res.data.data),
 	});
 
-// GET user by ID
-export const useUserById = (id: number) =>
+// GET user by UID
+export const useUserById = (uid: string) =>
 	useQuery<User>({
-		queryKey: ["user", id],
-		queryFn: () => Api.get(`/api/users/${id}`).then((res) => res.data.data),
-		enabled: !!id, // Only run if ID exists
+		queryKey: ["user", uid],
+		queryFn: () => Api.get(`/api/users/${uid}`).then((res) => res.data.data),
+		enabled: !!uid,
 	});
 
 // POST create user
@@ -48,13 +54,13 @@ export const useUserCreate = () =>
 // PUT update user
 export const useUserUpdate = () =>
 	useMutation({
-		mutationFn: ({ id, data }: { id: number; data: UserRequest }) =>
-			Api.put(`/api/users/${id}`, data).then((res) => res.data),
+		mutationFn: ({ uid, data }: { uid: string; data: UserRequest }) =>
+			Api.put(`/api/users/${uid}`, data).then((res) => res.data),
 	});
 
 // DELETE user
 export const useUserDelete = () =>
 	useMutation({
-		mutationFn: (id: number) =>
-			Api.delete(`/api/users/${id}`).then((res) => res.data),
+		mutationFn: (uid: string) =>
+			Api.delete(`/api/users/${uid}`).then((res) => res.data),
 	});
