@@ -4,16 +4,16 @@ A modern React starter template built with Vite, TanStack Query, TypeScript, and
 
 ## 🚀 Tech Stack
 
-- **React 18** - UI library
+- **React 19** - UI library
 - **Vite 7** - Build tool and dev server
 - **TypeScript** - Type safety
 - **TanStack Query v5** - Server state management
 - **React Router v7** - Client-side routing
-- **Tailwind CSS** - Utility-first CSS framework
+- **Tailwind CSS v3** - Utility-first CSS framework
 - **Radix UI** - Headless UI components
 - **Axios** - HTTP client
-- **Biome** - Fast linter and formatter
-- **Husky** - Git hooks
+- **Biome v2** - Fast linter and formatter
+- **Husky v9** - Git hooks
 
 ## 📦 Installation
 
