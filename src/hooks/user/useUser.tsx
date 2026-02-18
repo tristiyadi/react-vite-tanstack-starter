@@ -8,7 +8,7 @@ export interface User {
 	email: string;
 	username?: string;
 	role_id: number;
-	status: string;
+	status: "active" | "inactive";
 	created_at?: string;
 	updated_at?: string;
 }
@@ -20,7 +20,7 @@ export interface UserRequest {
 	password_confirmation?: string;
 	username?: string;
 	role_id: number;
-	status: string;
+	status: "active" | "inactive";
 }
 
 // GET all users

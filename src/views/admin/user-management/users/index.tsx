@@ -7,19 +7,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
 	Dialog,
 	DialogContent,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
 import {
 	Table,
 	TableBody,
@@ -30,7 +21,6 @@ import {
 } from "@/components/ui/table";
 import { useRoles } from "@/hooks/role/useRole";
 import {
-	type UserRequest as FormData,
 	type User,
 	useUserCreate,
 	useUserDelete,
@@ -38,6 +28,8 @@ import {
 	useUserUpdate,
 } from "@/hooks/user/useUser";
 import { toast } from "@/hooks/useToast";
+import type { UserValues } from "@/lib/validations/user";
+import { UserForm } from "./components/UserForm";
 
 const UsersIndex = () => {
 	const queryClient = useQueryClient();
@@ -54,79 +46,35 @@ const UsersIndex = () => {
 	// UI State
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
 	const [editingUser, setEditingUser] = useState<User | null>(null);
-	const [formData, setFormData] = useState<FormData>({
-		name: "",
-		email: "",
-		username: "",
-		role_id: 2,
-		status: "active",
-		password: "",
-		password_confirmation: "",
-	});
-	const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
 
 	const openDialog = (user?: User) => {
-		if (user) {
-			setEditingUser(user);
-			setFormData({
-				name: user.name,
-				email: user.email,
-				username: user.username || "",
-				role_id: user.role_id,
-				status: user.status,
-				password: "",
-				password_confirmation: "",
-			});
-		} else {
-			setEditingUser(null);
-			setFormData({
-				name: "",
-				email: "",
-				username: "",
-				role_id: 2,
-				status: "active",
-				password: "",
-				password_confirmation: "",
-			});
-		}
-		setFieldErrors({});
+		setEditingUser(user || null);
 		setIsDialogOpen(true);
 	};
 
-	const handleSave = () => {
-		setFieldErrors({});
-
+	const handleSave = (data: UserValues) => {
 		const handleError = (error: unknown) => {
 			const apiError = error as {
 				response?: {
 					data?: { data?: Record<string, string[]>; message?: string };
 				};
 			};
-			if (apiError?.response?.data?.data) {
-				const errors = apiError.response.data.data;
-				setFieldErrors(errors);
+			const errorMessage =
+				apiError?.response?.data?.message ||
+				(apiError instanceof Error ? apiError.message : "An error occurred");
 
-				toast({
-					title: apiError.response?.data?.message || "Validation Failed",
-					description: Object.values(errors).flat().join(", "),
-					variant: "destructive",
-				});
-			} else {
-				const errorMessage =
-					apiError instanceof Error ? apiError.message : "An error occurred";
-				toast({
-					title: "Error",
-					description: errorMessage,
-					variant: "destructive",
-				});
-			}
+			toast({
+				title: "Error",
+				description: errorMessage,
+				variant: "destructive",
+			});
 		};
 
 		if (editingUser) {
 			updateMutation.mutate(
 				{
 					uid: editingUser.uid,
-					data: formData,
+					data: data as any,
 				},
 				{
 					onSuccess: () => {
@@ -141,7 +89,7 @@ const UsersIndex = () => {
 				},
 			);
 		} else {
-			createMutation.mutate(formData, {
+			createMutation.mutate(data as any, {
 				onSuccess: () => {
 					toast({
 						title: "Success",
@@ -260,131 +208,22 @@ const UsersIndex = () => {
 				</CardContent>
 			</Card>
 
-			{/* Dialog */}
 			<Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
 				<DialogContent className="max-w-md">
 					<DialogHeader>
 						<DialogTitle>{editingUser ? "Edit User" : "Add User"}</DialogTitle>
 					</DialogHeader>
 
-					<div className="grid gap-4 py-4">
-						<div className="grid grid-cols-2 gap-4">
-							<div className="space-y-2">
-								<Label>Name</Label>
-								<Input
-									value={formData.name}
-									onChange={(e) =>
-										setFormData({ ...formData, name: e.target.value })
-									}
-									className={fieldErrors.name ? "border-destructive" : ""}
-								/>
-							</div>
-							<div className="space-y-2">
-								<Label>Username</Label>
-								<Input
-									value={formData.username}
-									onChange={(e) =>
-										setFormData({ ...formData, username: e.target.value })
-									}
-									className={fieldErrors.username ? "border-destructive" : ""}
-								/>
-							</div>
-						</div>
-
-						<div className="space-y-2">
-							<Label>Email</Label>
-							<Input
-								type="email"
-								value={formData.email}
-								onChange={(e) =>
-									setFormData({ ...formData, email: e.target.value })
-								}
-								className={fieldErrors.email ? "border-destructive" : ""}
-							/>
-						</div>
-
-						<div className="grid grid-cols-2 gap-4">
-							<div className="space-y-2">
-								<Label>Role</Label>
-								<Select
-									value={formData.role_id.toString()}
-									onValueChange={(v) =>
-										setFormData({ ...formData, role_id: parseInt(v, 10) })
-									}
-								>
-									<SelectTrigger>
-										<SelectValue placeholder="Select role" />
-									</SelectTrigger>
-									<SelectContent>
-										{roles?.map((role) => (
-											<SelectItem
-												key={role.roles_id}
-												value={role.roles_id.toString()}
-											>
-												{role.display_name}
-											</SelectItem>
-										))}
-									</SelectContent>
-								</Select>
-							</div>
-							<div className="space-y-2">
-								<Label>Status</Label>
-								<Select
-									value={formData.status}
-									onValueChange={(v) => setFormData({ ...formData, status: v })}
-								>
-									<SelectTrigger>
-										<SelectValue placeholder="Select status" />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value="active">Active</SelectItem>
-										<SelectItem value="inactive">Inactive</SelectItem>
-										<SelectItem value="pending">Pending</SelectItem>
-									</SelectContent>
-								</Select>
-							</div>
-						</div>
-
-						<div className="grid grid-cols-2 gap-4">
-							<div className="space-y-2">
-								<Label>Password</Label>
-								<Input
-									type="password"
-									value={formData.password}
-									onChange={(e) =>
-										setFormData({ ...formData, password: e.target.value })
-									}
-									placeholder={editingUser ? "Blank to keep" : "Enter password"}
-								/>
-							</div>
-							<div className="space-y-2">
-								<Label>Confirm Password</Label>
-								<Input
-									type="password"
-									value={formData.password_confirmation}
-									onChange={(e) =>
-										setFormData({
-											...formData,
-											password_confirmation: e.target.value,
-										})
-									}
-									placeholder="Confirm password"
-								/>
-							</div>
-						</div>
-					</div>
-
-					<DialogFooter>
-						<Button variant="outline" onClick={() => setIsDialogOpen(false)}>
-							Cancel
-						</Button>
-						<Button
-							onClick={handleSave}
-							disabled={createMutation.isPending || updateMutation.isPending}
-						>
-							Save
-						</Button>
-					</DialogFooter>
+					{roles && (
+						<UserForm
+							onSubmit={handleSave}
+							initialData={editingUser || undefined}
+							roles={roles}
+							isLoading={createMutation.isPending || updateMutation.isPending}
+							isEditing={!!editingUser}
+							onCancel={() => setIsDialogOpen(false)}
+						/>
+					)}
 				</DialogContent>
 			</Dialog>
 		</div>

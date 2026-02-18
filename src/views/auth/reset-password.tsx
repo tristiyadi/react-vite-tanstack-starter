@@ -1,6 +1,7 @@
 import { ArrowLeft, ArrowRight, CheckCircle, Mail } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthBranding } from "@/components/auth/AuthBranding";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,31 +30,10 @@ const ForgotPassword = () => {
 
 	return (
 		<div className="min-h-screen flex">
-			{/* Left Side - Branding */}
-			<div className="hidden lg:flex lg:w-1/2 gradient-primary relative overflow-hidden">
-				<div className="absolute inset-0 bg-black/20" />
-				<div className="relative z-10 flex flex-col justify-between p-12 text-white">
-					<div>
-						<h1 className="text-3xl font-bold">YourBrand</h1>
-					</div>
-					<div className="space-y-6">
-						<h2 className="text-4xl font-bold leading-tight">
-							Don't worry,
-							<br />
-							we've got you covered
-						</h2>
-						<p className="text-white/80 text-lg max-w-md">
-							We'll send you instructions to reset your password. Your security
-							is our priority.
-						</p>
-					</div>
-					<div className="flex items-center gap-4 text-sm text-white/60">
-						<span>© 2024 YourBrand. All rights reserved.</span>
-					</div>
-				</div>
-				<div className="absolute -right-32 -top-32 w-96 h-96 rounded-full bg-white/10" />
-				<div className="absolute -right-16 top-1/2 w-64 h-64 rounded-full bg-white/5" />
-			</div>
+			<AuthBranding
+				subtitle="Don't worry,&#10;we've got you covered"
+				description="We'll send you instructions to reset your password. Your security is our priority."
+			/>
 
 			{/* Right Side - Form */}
 			<div className="flex-1 flex items-center justify-center p-8 bg-background">
@@ -103,7 +83,10 @@ const ForgotPassword = () => {
 													<svg
 														className="animate-spin h-4 w-4"
 														viewBox="0 0 24 24"
+														role="img"
+														aria-label="Loading"
 													>
+														<title>Loading</title>
 														<circle
 															className="opacity-25"
 															cx="12"

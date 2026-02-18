@@ -2,6 +2,7 @@ import {
 	Bell,
 	ChevronDown,
 	FileText,
+	Globe,
 	LayoutDashboard,
 	LogOut,
 	Menu,
@@ -20,6 +21,7 @@ import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
+	DropdownMenuLabel,
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
@@ -120,13 +122,105 @@ const AdminLayout = () => {
 						</div>
 					</div>
 					<div className="flex items-center gap-3">
-						<ThemeToggle />
-						<Button variant="ghost" size="icon" className="relative">
-							<Bell className="h-5 w-5" />
-							<span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive text-destructive-foreground text-xs rounded-full flex items-center justify-center">
-								3
-							</span>
+						<Button
+							variant="outline"
+							size="sm"
+							asChild
+							className="hidden md:flex gap-2"
+						>
+							<Link to="/">
+								<Globe className="h-4 w-4" />
+								<span>Go To Website</span>
+							</Link>
 						</Button>
+						<ThemeToggle />
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost" size="icon" className="relative">
+									<Bell className="h-5 w-5" />
+									<span className="absolute -top-1 -right-1 h-4 w-4 bg-destructive text-destructive-foreground text-xs rounded-full flex items-center justify-center">
+										3
+									</span>
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end" className="w-[320px] p-0">
+								<div className="flex items-center justify-between p-4 border-b border-border">
+									<DropdownMenuLabel className="p-0">
+										Notifications
+									</DropdownMenuLabel>
+									<span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-medium">
+										3 New
+									</span>
+								</div>
+								<div className="max-h-[350px] overflow-y-auto">
+									<DropdownMenuItem className="flex flex-col items-start gap-1.5 p-4 focus:bg-muted cursor-pointer border-b border-border/50 last:border-0 rounded-none">
+										<div className="flex justify-between w-full gap-2">
+											<span className="font-semibold text-sm">
+												New User Registered
+											</span>
+											<span className="text-xs text-muted-foreground whitespace-nowrap">
+												2m ago
+											</span>
+										</div>
+										<p className="text-xs text-muted-foreground leading-relaxed">
+											A new user account was created by john.doe@example.com.
+											Verification pending.
+										</p>
+										<div className="flex items-center gap-1 mt-1">
+											<div className="h-2 w-2 rounded-full bg-blue-500" />
+											<span className="text-[10px] font-medium text-blue-500 uppercase tracking-wider">
+												System
+											</span>
+										</div>
+									</DropdownMenuItem>
+									<DropdownMenuItem className="flex flex-col items-start gap-1.5 p-4 focus:bg-muted cursor-pointer border-b border-border/50 last:border-0 rounded-none">
+										<div className="flex justify-between w-full gap-2">
+											<span className="font-semibold text-sm">
+												Server Capacity Warning
+											</span>
+											<span className="text-xs text-muted-foreground whitespace-nowrap">
+												1h ago
+											</span>
+										</div>
+										<p className="text-xs text-muted-foreground leading-relaxed">
+											Server CPU usage exceeded 85% for more than 10 minutes on
+											Node-02.
+										</p>
+										<div className="flex items-center gap-1 mt-1">
+											<div className="h-2 w-2 rounded-full bg-amber-500" />
+											<span className="text-[10px] font-medium text-amber-500 uppercase tracking-wider">
+												Alert
+											</span>
+										</div>
+									</DropdownMenuItem>
+									<DropdownMenuItem className="flex flex-col items-start gap-1.5 p-4 focus:bg-muted cursor-pointer border-b border-border/50 last:border-0 rounded-none">
+										<div className="flex justify-between w-full gap-2">
+											<span className="font-semibold text-sm">
+												New Support Ticket
+											</span>
+											<span className="text-xs text-muted-foreground whitespace-nowrap">
+												4h ago
+											</span>
+										</div>
+										<p className="text-xs text-muted-foreground leading-relaxed">
+											A new high-priority ticket has been opened by Enterprise
+											Customer.
+										</p>
+										<div className="flex items-center gap-1 mt-1">
+											<div className="h-2 w-2 rounded-full bg-rose-500" />
+											<span className="text-[10px] font-medium text-rose-500 uppercase tracking-wider">
+												Support
+											</span>
+										</div>
+									</DropdownMenuItem>
+								</div>
+								<div className="p-2 border-t border-border">
+									<Button variant="ghost" size="sm" className="w-full text-xs">
+										View All Notifications
+									</Button>
+								</div>
+							</DropdownMenuContent>
+						</DropdownMenu>
 						<DropdownMenu>
 							<DropdownMenuTrigger asChild>
 								<Button variant="ghost" className="flex items-center gap-2">

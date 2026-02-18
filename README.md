@@ -166,6 +166,61 @@ npm install clsx tailwind-merge
 npm install lucide-react
 ```
 
+### 🧪 Testing Setup
+
+#### 1. Install Testing Dependencies
+
+```bash
+npm install -D vitest @vitest/coverage-v8 jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
+```
+
+#### 2. Configure Vitest
+
+Update `vite.config.ts` to include the test configuration:
+
+```typescript
+export default defineConfig({
+  // ... existing config
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ["./src/test/setup.ts"],
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: ["src/main.tsx", "src/vite-env.d.ts", "src/test/**"],
+      // thresholds: {
+      //   lines: 98,
+      //   functions: 98,
+      //   branches: 98,
+      //   statements: 98,
+      // },
+    },
+  },
+})
+```
+
+#### 3. Create Test Setup
+
+Create `src/test/setup.ts` to extend Vitest with Testing Library matchers:
+
+```typescript
+import "@testing-library/jest-dom/vitest";
+```
+
+#### 4. Add Test Scripts
+
+Add these to your `package.json`:
+
+```json
+{
+  "scripts": {
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  }
+}
+```
+
 ## 🏗️ Project Structure
 
 ```
@@ -243,6 +298,10 @@ npm run preview          # Preview production build
 # Code Quality
 npm run lint             # Lint and fix code
 npm run format           # Format code
+
+# Testing
+npm run test             # Run unit tests
+npm run test:coverage    # Run tests with coverage report
 ```
 
 ## 🔧 Configuration
@@ -310,4 +369,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 
-**Built with ❤️ using React + Vite + TanStack**
+Built with ❤️ using React + Vite + TanStack

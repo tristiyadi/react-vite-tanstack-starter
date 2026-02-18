@@ -1,11 +1,43 @@
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import {
+	ChevronDown,
+	LayoutDashboard,
+	LogOut,
+	Menu,
+	Settings,
+	User,
+	X,
+} from "lucide-react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { AuthContext } from "@/context/AuthContext";
+import { useAuthUser, useLogout } from "@/hooks/auth/useAuth";
 
 const PublicNavbar = () => {
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+	const auth = useContext(AuthContext);
+	const user = useAuthUser();
+	const logout = useLogout();
+
+	const isAuthenticated = auth?.isAuthenticated ?? false;
+
+	const userInitial = user?.name
+		? user.name
+				.split(" ")
+				.map((n) => n[0])
+				.join("")
+				.toUpperCase()
+				.slice(0, 2)
+		: "??";
 
 	const navLinks = [
 		{ label: "Features", href: "#features" },
@@ -24,7 +56,6 @@ const PublicNavbar = () => {
 					<span className="text-xl font-bold text-foreground">YourBrand</span>
 				</Link>
 
-				{/* Desktop Navigation */}
 				<nav className="hidden md:flex items-center gap-8">
 					{navLinks.map((link) => (
 						<a
@@ -39,15 +70,53 @@ const PublicNavbar = () => {
 
 				<div className="hidden md:flex items-center gap-3">
 					<ThemeToggle />
-					<Button variant="ghost" asChild>
-						<Link to="/login">Sign in</Link>
-					</Button>
-					<Button asChild>
-						<Link to="/register">Get Started</Link>
-					</Button>
+					{isAuthenticated ? (
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost" className="flex items-center gap-2">
+									<Avatar className="h-8 w-8">
+										<AvatarFallback className="bg-primary text-primary-foreground">
+											{userInitial}
+										</AvatarFallback>
+									</Avatar>
+									<span className="font-medium">{user?.name || "User"}</span>
+									<ChevronDown className="h-4 w-4" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<DropdownMenuItem asChild>
+									<Link to="/admin">
+										<LayoutDashboard className="mr-2 h-4 w-4" />
+										Dashboard
+									</Link>
+								</DropdownMenuItem>
+								<DropdownMenuItem>
+									<User className="mr-2 h-4 w-4" />
+									Profile
+								</DropdownMenuItem>
+								<DropdownMenuItem>
+									<Settings className="mr-2 h-4 w-4" />
+									Settings
+								</DropdownMenuItem>
+								<DropdownMenuSeparator />
+								<DropdownMenuItem className="text-destructive" onClick={logout}>
+									<LogOut className="mr-2 h-4 w-4" />
+									Logout
+								</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+					) : (
+						<>
+							<Button variant="ghost" asChild>
+								<Link to="/login">Sign in</Link>
+							</Button>
+							<Button asChild>
+								<Link to="/register">Get Started</Link>
+							</Button>
+						</>
+					)}
 				</div>
 
-				{/* Mobile Menu Button */}
 				<div className="flex items-center gap-2 md:hidden">
 					<ThemeToggle />
 					<Button
@@ -64,7 +133,6 @@ const PublicNavbar = () => {
 				</div>
 			</div>
 
-			{/* Mobile Menu */}
 			{isMobileMenuOpen && (
 				<div className="md:hidden border-t border-border bg-background animate-fade-in">
 					<nav className="container py-4 flex flex-col gap-3">
@@ -79,12 +147,25 @@ const PublicNavbar = () => {
 							</a>
 						))}
 						<div className="flex flex-col gap-2 pt-4 border-t border-border">
-							<Button variant="outline" asChild>
-								<Link to="/login">Sign in</Link>
-							</Button>
-							<Button asChild>
-								<Link to="/register">Get Started</Link>
-							</Button>
+							{isAuthenticated ? (
+								<>
+									<Button variant="outline" asChild>
+										<Link to="/admin">Dashboard</Link>
+									</Button>
+									<Button variant="destructive" onClick={logout}>
+										Logout
+									</Button>
+								</>
+							) : (
+								<>
+									<Button variant="outline" asChild>
+										<Link to="/login">Sign in</Link>
+									</Button>
+									<Button asChild>
+										<Link to="/register">Get Started</Link>
+									</Button>
+								</>
+							)}
 						</div>
 					</nav>
 				</div>
