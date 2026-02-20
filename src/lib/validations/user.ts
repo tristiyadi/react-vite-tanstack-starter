@@ -46,5 +46,3 @@ export const createUserSchema = userObject
 		password_confirmation: z.string().min(1, "Please confirm your password"),
 	})
 	.refine(passwordMatchRefinement, passwordMatchParams);
-
-export const updateUserSchema = userSchema;

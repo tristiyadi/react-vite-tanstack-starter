@@ -51,10 +51,10 @@ const Footer = () => {
 					<div className="col-span-2 md:col-span-1">
 						<Link to="/" className="flex items-center gap-2 mb-4">
 							<div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
-								<span className="text-white font-bold text-sm">YB</span>
+								<span className="text-white font-bold text-sm">ET</span>
 							</div>
 							<span className="text-lg font-bold text-foreground">
-								YourBrand
+								ET-Admin
 							</span>
 						</Link>
 						<p className="text-sm text-muted-foreground mb-4">

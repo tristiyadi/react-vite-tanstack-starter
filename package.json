@@ -12,7 +12,8 @@
     "format": "biome format --write ./src",
     "prepare": "husky",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "doctor": "npx -y react-doctor@latest ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

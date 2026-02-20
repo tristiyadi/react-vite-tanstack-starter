@@ -20,7 +20,7 @@ import {
 import {
 	createUserSchema,
 	type UserValues,
-	updateUserSchema,
+	userSchema,
 } from "@/lib/validations/user";
 
 interface Role {
@@ -45,7 +45,7 @@ export const UserForm = ({
 	isEditing,
 	onCancel,
 }: UserFormProps) => {
-	const schema = isEditing ? updateUserSchema : createUserSchema;
+	const schema = isEditing ? userSchema : createUserSchema;
 
 	const form = useForm<UserValues>({
 		resolver: zodResolver(schema),

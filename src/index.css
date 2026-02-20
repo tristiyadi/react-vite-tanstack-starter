@@ -137,24 +137,9 @@
 		);
 	}
 
-	.glass {
-		background: hsl(var(--background) / 0.8);
-		backdrop-filter: blur(12px);
-		-webkit-backdrop-filter: blur(12px);
-	}
-
-	.animate-in {
-		animation: animateIn 0.3s ease-out;
-	}
-
-	@keyframes animateIn {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
+	.glass-morphism {
+		background: hsla(var(--background) / 0.6);
+		backdrop-filter: blur(16px) saturate(180%);
+		-webkit-backdrop-filter: blur(16px) saturate(180%);
 	}
 }

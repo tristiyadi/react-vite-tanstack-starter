@@ -40,32 +40,44 @@ const PublicNavbar = () => {
 		: "??";
 
 	const navLinks = [
-		{ label: "Features", href: "#features" },
-		{ label: "Pricing", href: "#pricing" },
-		{ label: "About", href: "#about" },
-		{ label: "Contact", href: "#contact" },
+		{ label: "Home", href: "/", isInternal: true },
+		{ label: "Features", href: "/features", isInternal: true },
+		{ label: "Pricing", href: "/pricing", isInternal: true },
+		{ label: "Agenda", href: "/agenda", isInternal: true },
+		{ label: "About", href: "/about", isInternal: true },
+		{ label: "Contact", href: "/contact", isInternal: true },
 	];
 
 	return (
-		<header className="sticky top-0 z-50 w-full glass border-b border-border/50">
+		<header className="fixed top-0 left-0 right-0 z-50 w-full glass-morphism border-b border-border/50 transition-all duration-300">
 			<div className="container flex h-16 items-center justify-between">
 				<Link to="/" className="flex items-center gap-2">
 					<div className="h-8 w-8 rounded-lg gradient-primary flex items-center justify-center">
-						<span className="text-white font-bold text-sm">YB</span>
+						<span className="text-white font-bold text-sm">ET</span>
 					</div>
-					<span className="text-xl font-bold text-foreground">YourBrand</span>
+					<span className="text-xl font-bold text-foreground">ET-Admin</span>
 				</Link>
 
 				<nav className="hidden md:flex items-center gap-8">
-					{navLinks.map((link) => (
-						<a
-							key={link.label}
-							href={link.href}
-							className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-						>
-							{link.label}
-						</a>
-					))}
+					{navLinks.map((link) =>
+						link.isInternal ? (
+							<Link
+								key={link.label}
+								to={link.href}
+								className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+							>
+								{link.label}
+							</Link>
+						) : (
+							<a
+								key={link.label}
+								href={link.href}
+								className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+							>
+								{link.label}
+							</a>
+						),
+					)}
 				</nav>
 
 				<div className="hidden md:flex items-center gap-3">
@@ -136,16 +148,27 @@ const PublicNavbar = () => {
 			{isMobileMenuOpen && (
 				<div className="md:hidden border-t border-border bg-background animate-fade-in">
 					<nav className="container py-4 flex flex-col gap-3">
-						{navLinks.map((link) => (
-							<a
-								key={link.label}
-								href={link.href}
-								className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
-								onClick={() => setIsMobileMenuOpen(false)}
-							>
-								{link.label}
-							</a>
-						))}
+						{navLinks.map((link) =>
+							link.isInternal ? (
+								<Link
+									key={link.label}
+									to={link.href}
+									className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+									onClick={() => setIsMobileMenuOpen(false)}
+								>
+									{link.label}
+								</Link>
+							) : (
+								<a
+									key={link.label}
+									href={link.href}
+									className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2"
+									onClick={() => setIsMobileMenuOpen(false)}
+								>
+									{link.label}
+								</a>
+							),
+						)}
 						<div className="flex flex-col gap-2 pt-4 border-t border-border">
 							{isAuthenticated ? (
 								<>
