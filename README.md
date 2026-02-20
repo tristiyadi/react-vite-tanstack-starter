@@ -9,7 +9,7 @@ A modern React starter template built with Vite, TanStack Query, TypeScript, and
 - **TypeScript** - Type safety
 - **TanStack Query v5** - Server state management
 - **React Router v7** - Client-side routing
-- **Tailwind CSS v3** - Utility-first CSS framework
+- **Tailwind CSS v4** - Utility-first CSS framework
 - **Radix UI** - Headless UI components
 - **Axios** - HTTP client
 - **Biome v2** - Fast linter and formatter
@@ -117,11 +117,10 @@ Update `.husky/pre-commit`:
 ```bash
 npx lint-staged
 ```
-
-### Setup Tailwind CSS
+### Setup Tailwind CSS v3
 
 ```bash
-npm install -D tailwindcss postcss autoprefixer @tailwindcss/vite
+npm install -D tailwindcss@3.4.19 postcss@8.5.11 autoprefixer@10.4.22 @tailwindcss/vite@4.1.18
 npx tailwindcss init -p
 ```
 
@@ -148,6 +147,78 @@ Add to `src/index.css`:
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+### Setup Tailwind CSS v4
+
+```bash
+npm install tailwindcss @tailwindcss/vite @tailwindcss/typography tw-animate-css
+```
+
+Add the Tailwind Vite plugin to `vite.config.ts`:
+
+```typescript
+import tailwindcss from "@tailwindcss/vite";
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+  // ...
+});
+```
+
+In Tailwind v4, there is **no `tailwind.config.ts`** or `postcss.config.js`. All configuration lives in `src/index.css`:
+
+```css
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  /* ... all theme tokens ... */
+
+  --radius-lg: var(--radius);
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  --animate-fade-in: fade-in 0.3s ease-out;
+
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+/* CSS variables for light/dark mode */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222 47% 11%;
+  /* ... */
+}
+
+.dark {
+  --background: 222 47% 6%;
+  --foreground: 210 40% 98%;
+  /* ... */
+}
+
+/* Custom utilities use @utility instead of @layer utilities */
+@utility gradient-primary {
+  background: linear-gradient(135deg, hsl(221 83% 53%) 0%, hsl(280 65% 60%) 100%);
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
 ```
 
 ### Setup Radix UI (shadcn/ui style)
@@ -165,6 +236,31 @@ npm install class-variance-authority
 npm install clsx tailwind-merge
 npm install lucide-react
 ```
+
+### How to Migrate Tailwind v3 to v4
+
+```bash
+# 1. Install v4 packages
+npm install tailwindcss@latest @tailwindcss/vite@latest @tailwindcss/typography@latest
+
+# 2. Replace tailwindcss-animate with tw-animate-css, remove PostCSS
+npm install tw-animate-css && npm uninstall tailwindcss-animate autoprefixer postcss
+
+# 3. Delete old config files (no longer needed in v4)
+del postcss.config.js && del tailwind.config.ts
+
+# 4. Verify build
+npx vite build
+```
+
+Key changes:
+
+- `@tailwind base/components/utilities` → `@import "tailwindcss"`
+- `tailwind.config.ts` → `@theme inline { ... }` in `index.css`
+- `@layer utilities { .my-util {} }` → `@utility my-util { ... }`
+- `darkMode: ["class"]` → `@custom-variant dark (&:is(.dark *))`
+- `tailwindcss-animate` → `tw-animate-css`
+
 
 ### 🧪 Testing Setup
 
@@ -226,25 +322,61 @@ Add these to your `package.json`:
 ```
 src/
 ├── components/
-│   ├── layout/          # Layout components (AdminLayout, etc.)
-│   ├── ui/              # Reusable UI components
-│   └── ThemeToggle.tsx  # Theme switcher
+│   ├── auth/                # Auth-related components (AuthBranding)
+│   ├── layout/              # Layout components
+│   │   ├── AdminLayout.tsx  # Admin sidebar + navbar layout
+│   │   ├── PublicNavbar.tsx  # Public pages navigation bar
+│   │   └── Footer.tsx       # Public pages footer
+│   ├── ui/                  # Reusable UI components (shadcn/ui)
+│   ├── NavLink.tsx          # Navigation link component
+│   ├── SidebarMenu.tsx      # Sidebar menu component
+│   ├── ThemeProvider.tsx     # Theme context provider
+│   └── ThemeToggle.tsx      # Dark/Light mode switcher
 ├── context/
-│   └── AuthContext.tsx  # Authentication context
+│   └── AuthContext.tsx      # Authentication context & provider
+├── guards/
+│   ├── AuthGuard.tsx        # Protected route guard (redirects to /login)
+│   └── GuestGuard.tsx       # Guest-only guard (redirects to /admin)
 ├── hooks/
-│   ├── auth/            # Authentication hooks
-│   ├── user/            # User management hooks
-│   └── useToast.tsx     # Toast notifications
+│   ├── auth/                # Authentication hooks (useAuth, useLogin)
+│   ├── role/                # Role management hooks
+│   ├── user/                # User management hooks
+│   ├── useDebounced.tsx     # Debounce hook
+│   ├── useIsMobile.tsx      # Responsive breakpoint hook
+│   ├── useTheme.tsx         # Theme hook
+│   └── useToast.ts          # Toast notifications hook
+├── lib/
+│   ├── validations/         # Zod validation schemas
+│   │   ├── auth.ts          # Login/Register schemas
+│   │   └── user.ts          # User management schemas
+│   └── utils.ts             # cn() utility (clsx + tailwind-merge)
 ├── services/
-│   └── api.ts           # Axios instance & API config
+│   └── api.ts               # Axios instance & API config
 ├── views/
-│   ├── admin/           # Admin dashboard pages
-│   ├── auth/            # Authentication pages
-│   └── home/            # Public pages
+│   ├── admin/
+│   │   ├── dashboard/       # Admin dashboard page
+│   │   └── user-management/ # Users & roles CRUD pages
+│   ├── auth/
+│   │   ├── components/      # Auth form components (LoginForm, RegisterForm)
+│   │   ├── login.tsx         # Login page
+│   │   ├── register.tsx      # Register page
+│   │   └── reset-password.tsx # Reset password page
+│   ├── home/                # Home/landing page
+│   ├── About.tsx            # About page
+│   ├── Agenda.tsx           # Agenda/blog listing page
+│   ├── AgendaDetail.tsx     # Agenda/blog detail page
+│   ├── Contact.tsx          # Contact page
+│   ├── Features.tsx         # Features page
+│   ├── Pricing.tsx          # Pricing page
+│   └── NotFound.tsx         # 404 page
 ├── routes/
-│   └── index.tsx        # Route configuration
-├── App.tsx              # Root component
-└── main.tsx             # Entry point
+│   └── index.tsx            # Route configuration
+├── test/
+│   └── setup.ts             # Vitest setup with Testing Library
+├── index.css                # Tailwind v4 CSS-first config & design tokens
+├── App.tsx                  # Root component
+├── main.tsx                 # Entry point
+└── vite-env.d.ts            # Vite type declarations
 ```
 
 ## 🎯 Features
@@ -353,7 +485,7 @@ export const useExample = () =>
 
 ### Theme Colors
 
-Update your Tailwind config or CSS variables for custom theming.
+Update CSS variables in `src/index.css` (`:root` for light mode, `.dark` for dark mode) and their corresponding `--color-*` tokens in the `@theme inline` block.
 
 ### Components
 
