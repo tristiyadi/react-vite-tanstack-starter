@@ -166,6 +166,14 @@ npm install clsx tailwind-merge
 npm install lucide-react
 ```
 
+### How to Migrate Tailwind v3 to v4
+npm install tailwindcss@latest @tailwindcss/vite@latest @tailwindcss/typography@latest
+npm install tw-animate-css && npm uninstall tailwindcss-animate autoprefixer postcss
+del postcss.config.js && del tailwind.config.ts
+
+npx vite build
+
+
 ### 🧪 Testing Setup
 
 #### 1. Install Testing Dependencies
