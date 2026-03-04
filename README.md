@@ -317,6 +317,62 @@ Add these to your `package.json`:
 }
 ```
 
+### 🕷️ TestSprite (E2E Testing)
+
+[TestSprite](https://testsprite.com/) is an AI-powered end-to-end testing tool that automatically generates and executes browser tests for your application. It works via an MCP (Model Context Protocol) server and integrates with AI coding assistants.
+
+#### 1. Install TestSprite
+
+```bash
+npm install -g @testsprite/testsprite-mcp
+```
+
+#### 2. MCP Configuration
+
+Add the following to your MCP config (e.g. `.gemini/settings.json`, `.cursor/mcp.json`, or equivalent):
+
+```json
+{
+  "mcpServers": {
+    "testsprite": {
+      "command": "node",
+      "args": [
+        "C:\\nvm4w\\nodejs\\node_modules\\@testsprite\\testsprite-mcp\\dist\\index.js"
+      ]
+    }
+  }
+}
+```
+
+> **Note:** Adjust the `cd` path to your project root and the `node` path to match your Node.js/nvm installation.
+
+#### 3. How It Works
+
+1. **Bootstrap** — TestSprite scans the codebase and generates a config at `testsprite_tests/tmp/config.json`
+2. **Generate Test Plan** — AI analyzes the app and creates a prioritized list of E2E test scenarios
+3. **Generate & Execute Tests** — Test code is auto-generated and run against the local dev server
+
+#### 4. Running TestSprite
+
+##### Option A: Via AI Assistant (MCP)
+
+Ask your AI coding assistant (Gemini, Cursor, etc.) to run TestSprite. The MCP server handles the communication automatically.
+
+##### Option B: Direct Command Line
+
+Make sure your dev server is running first (`npm run dev`), then execute:
+
+```bash
+# Generate and execute all E2E tests
+node C:\nvm4w\nodejs\node_modules\@testsprite\testsprite-mcp\dist\index.js generateCodeAndExecute
+```
+
+#### 5. Test Output
+
+- Test results are saved in the `testsprite_tests/` directory
+- This directory is git-ignored by default
+- A markdown report is generated after each test run
+
 ## 🏗️ Project Structure
 
 ```
