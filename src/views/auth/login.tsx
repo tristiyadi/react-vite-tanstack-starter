@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { AuthContext } from "../../context/AuthContext";
 import { useLogin } from "../../hooks/auth/useAuth";
 import { LoginForm } from "./components/LoginForm";
+import type { LoginValues } from "@/lib/validations/auth";
 
 interface ValidationErrors {
 	[key: string]: string[];
@@ -20,7 +21,7 @@ const Login = () => {
 	const { setIsAuthenticated } = authContext;
 	const [errors, setErrors] = useState<ValidationErrors>({});
 
-	const handleLogin = (formData: any) => {
+	const handleLogin = (formData: LoginValues) => {
 		mutate(
 			{
 				email: formData.email,

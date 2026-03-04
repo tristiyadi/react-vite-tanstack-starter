@@ -1,0 +1,1069 @@
+[
+  {
+    "id": "TC001",
+    "title": "Password confirmation mismatch shows validation error",
+    "description": "Verifies the registration form blocks submission when password confirmation does not match the password.",
+    "category": "User Registration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create account\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Mismatch User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"mismatch.user+e2e@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"MismatchPass123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"DifferentPass123!\" into the password confirmation field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Create account\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Passwords do not match\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "Terms acceptance required shows validation error when unchecked",
+    "description": "Verifies the registration form requires accepting terms before allowing account creation.",
+    "category": "User Registration",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create account\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"No Terms User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"noterms.user+e2e@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Create account\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"You must accept the terms\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Required field validation when submitting an empty form",
+    "description": "Verifies required-field validation messages appear when attempting to submit without entering registration details.",
+    "category": "User Registration",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create account\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Create account\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Name is required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Email is required\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Password is required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Invalid email format shows validation error",
+    "description": "Verifies the email field enforces a valid email format before allowing submission.",
+    "category": "User Registration",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create account\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Bad Email User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"not-an-email\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Create account\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Invalid email\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Weak password is rejected by client-side validation",
+    "description": "Verifies a weak password triggers a visible validation message and blocks account creation.",
+    "category": "User Registration",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create account\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"Weak Password User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"weak.password+e2e@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"123\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Create account\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Password\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Username required validation is shown when omitted",
+    "description": "Verifies the registration form requires a username and displays a visible error if it is missing.",
+    "category": "User Registration",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /register"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Create account\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Type \"No Username User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"nousername.user+e2e@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPass123!\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"ValidPass123!\" into the password confirmation field"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Create account\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Username is required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Access admin user management and view the user list",
+    "description": "Verifies an authenticated admin can open User Management and see the users list page.",
+    "category": "User Management (Admin)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin\""
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Users\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Add User\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Create a new user from the Users page",
+    "description": "Verifies an admin can add a new user and see it appear in the users list.",
+    "category": "User Management (Admin)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Add User\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Add User\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Test User A\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"test.user.a+e2e@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"testuser_a_e2e\" into the username field"
+      },
+      {
+        "type": "action",
+        "description": "Select \"User\" from the role dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Active\" from the status dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"TempPass!234\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"test.user.a+e2e@example.com\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Edit an existing user and confirm the updated details appear in the list",
+    "description": "Verifies an admin can open an edit form for a user, update fields, and see the updated value in the users list.",
+    "category": "User Management (Admin)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Edit\" action for the first user in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Edit User\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Updated Name E2E\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Updated Name E2E\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Delete/archive a user and verify it is removed from the list after confirmation",
+    "description": "Verifies an admin can delete/archive a user and the user no longer appears in the list.",
+    "category": "User Management (Admin)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Delete\" or \"Archive\" action for the first user in the list"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Confirm\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Confirm\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"User deleted\" or \"Archived\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Email format validation when adding a user",
+    "description": "Verifies the Add User form blocks submission and shows an email validation message for an invalid email format.",
+    "category": "User Management (Admin)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Add User\" button"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Bad Email User\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"not-an-email\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Invalid email\" or \"Email is invalid\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Required-field validation when adding a user",
+    "description": "Verifies the Add User form shows required-field errors when submitted with missing mandatory fields.",
+    "category": "User Management (Admin)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Add User\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Required\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Cancel out of Add User without creating a user",
+    "description": "Verifies an admin can cancel/close the Add User form and return to the users list without creating a record.",
+    "category": "User Management (Admin)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Add User\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Add User\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Cancel\" or \"Close\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Users\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Add User\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Create user with role and status selections reflected after save",
+    "description": "Verifies role and status choices on the Add User form are persisted and shown in the users list.",
+    "category": "User Management (Admin)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click \"Users\" in the admin navigation"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Add User\" button"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"Role Status Check\" into the name field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"role.status.check+e2e@example.com\" into the email field"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"role_status_e2e\" into the username field"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Admin\" from the role dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Select \"Inactive\" from the status dropdown"
+      },
+      {
+        "type": "action",
+        "description": "Fill \"TempPass!234\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Submit\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"role.status.check+e2e@example.com\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Admin\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Inactive\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Access admin dashboard when authenticated",
+    "description": "Verifies an authenticated user can load the Admin Dashboard and see the main overview content.",
+    "category": "Admin Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" or \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/dashboard\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dashboard\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Navigate from dashboard to Users via sidebar",
+    "description": "Verifies the dashboard provides navigation to the Users list through the sidebar/menu.",
+    "category": "Admin Dashboard",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" or \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Users\" link in the admin sidebar or navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/users\""
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Navigate from dashboard to Roles via sidebar",
+    "description": "Verifies the dashboard provides navigation to the Roles list through the sidebar/menu.",
+    "category": "Admin Dashboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" or \"Login\" button"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Roles\" link in the admin sidebar or navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/admin/roles\""
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Dashboard shows key overview section after login",
+    "description": "Verifies the admin dashboard renders an overview area (e.g., statistics/cards) for an authenticated user.",
+    "category": "Admin Dashboard",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" or \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Dashboard\" is visible"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify at least one dashboard overview card/metric section is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Dashboard navigation remains usable after page content is visible",
+    "description": "Verifies that once the dashboard is visible, the navigation UI is present and can be used to move to another admin page.",
+    "category": "Admin Dashboard",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_USER}}\" into the email/username field"
+      },
+      {
+        "type": "action",
+        "description": "Type \"{{LOGIN_PASSWORD}}\" into the password field"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Sign in\" or \"Login\" button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Admin\" sidebar or navigation menu is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click the \"Users\" link in the admin sidebar or navigation menu"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Users\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Home landing page loads and Login link navigates to Login page",
+    "description": "Verifies the public home page renders key hero content and the navbar Login link routes to the login page.",
+    "category": "Public Home & Navigation",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"hero\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Login\" link in the top navigation bar"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify page title contains \"Login\""
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "Toggle theme from Light to Dark and back on the landing page",
+    "description": "Verifies the theme toggle switches the UI to dark mode and back to light mode within the same session.",
+    "category": "Theming (Dark/Light Mode)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Theme Toggle\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Light\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "Persist selected theme after page reload (Dark mode)",
+    "description": "Verifies that after selecting dark mode, reloading the page keeps the previously selected theme.",
+    "category": "Theming (Dark/Light Mode)",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Press \"F5\" to reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "Persist selected theme after page reload (Light mode)",
+    "description": "Verifies that after switching back to light mode, reloading the page keeps light mode selected.",
+    "category": "Theming (Dark/Light Mode)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Light\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Press \"F5\" to reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Light\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC024",
+    "title": "Theme toggle is available and functional on the login page",
+    "description": "Verifies the theme toggle is present on /login and changes theme state there.",
+    "category": "Theming (Dark/Light Mode)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify element \"Theme Toggle\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Light\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC025",
+    "title": "Theme selection persists when navigating from Home to Login (no reload)",
+    "description": "Verifies the selected theme remains applied across client-side navigation to another route.",
+    "category": "Theming (Dark/Light Mode)",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/login\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC026",
+    "title": "Theme selection persists when navigating from Login back to Home (no reload)",
+    "description": "Verifies the selected theme remains applied when returning to the landing page via in-app navigation.",
+    "category": "Theming (Dark/Light Mode)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /login"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Home\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify URL contains \"/\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      }
+    ]
+  },
+  {
+    "id": "TC027",
+    "title": "Theme can be toggled multiple times without breaking the UI state",
+    "description": "Verifies repeated toggling continues to update the visible theme indicator correctly.",
+    "category": "Theming (Dark/Light Mode)",
+    "priority": "Low",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to /"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Light\" is visible"
+      },
+      {
+        "type": "action",
+        "description": "Click on \"Theme Toggle\""
+      },
+      {
+        "type": "assertion",
+        "description": "Verify text \"Dark\" is visible"
+      }
+    ]
+  }
+]

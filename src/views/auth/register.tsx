@@ -5,6 +5,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "@/hooks/useToast";
 import { useRegister } from "../../hooks/auth/useAuth";
 import { RegisterForm } from "./components/RegisterForm";
+import type { RegisterValues } from "@/lib/validations/auth";
 
 interface ValidationErrors {
 	[key: string]: string[];
@@ -15,7 +16,7 @@ const Register = () => {
 	const { mutate, isPending: isLoading } = useRegister();
 	const [errors, setErrors] = useState<ValidationErrors>({});
 
-	const handleRegister = (formData: any) => {
+	const handleRegister = (formData: RegisterValues) => {
 		if (formData.password !== formData.confirmPassword) {
 			setErrors({
 				password_confirmation: ["Passwords Confirmation do not match"],
